@@ -7,9 +7,7 @@ list_of_rows = []
 def deletelist():
     list_of_rows.clear()
 
-
 def saveproxy():
-    
     filename = input("Please input name of file to be saved")        
     with open (filename + '.csv','w') as file:
         writer=csv.writer(file)
@@ -32,12 +30,8 @@ def sslproxiesorgscrape(table):
         list_of_rows.append(list_of_cells)
 
 def scrapesslproxiesorg():
-
     soup=makesoup(url = "https://www.sslproxies.org")
     sslproxiesorgscrape(table = soup.find('table', attrs={'id': 'proxylisttable'}))
-
-
-    
 
 def menu():
         strs = ('Enter 1 to Scrape Proxies from http://sslproxies.org\n'
@@ -53,4 +47,3 @@ while True:          #use while True
         deletelist()
     elif choice == 2:
         break
-    
