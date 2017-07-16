@@ -4,6 +4,10 @@ from bs4 import BeautifulSoup
 
 list_of_rows = []
 
+def deletelist():
+    list_of_rows.clear()
+
+
 def saveproxy():
     
     filename = input("Please input name of file to be saved")        
@@ -14,22 +18,26 @@ def saveproxy():
             writer.writerow(row)
     print("File Saved Successfully")
 
-def scrapesslproxiesorg():
+def makesoup(url):
+    page=requests.get(url)
+    print(url + "  scraped successfully")
+    return BeautifulSoup(page.text,"lxml")
 
-    url = 'https://www.sslproxies.org/'
-    response = requests.get(url)
-    html = response.content
-
-    soup = BeautifulSoup(html, "lxml")
-    table = soup.find('table', attrs={'id': 'proxylisttable'})
-
-
+def sslproxiesorgscrape(table):
     for row in table.findAll('tr'):
         list_of_cells = []
         for cell in row.findAll('td'):
             text = cell.text.replace('&nbsp;', '')
             list_of_cells.append(text)
         list_of_rows.append(list_of_cells)
+
+def scrapesslproxiesorg():
+
+    soup=makesoup(url = "https://www.sslproxies.org")
+    sslproxiesorgscrape(table = soup.find('table', attrs={'id': 'proxylisttable'}))
+
+
+    
 
 def menu():
         strs = ('Enter 1 to Scrape Proxies from http://sslproxies.org\n'
@@ -42,6 +50,7 @@ while True:          #use while True
     if choice == 1:
         scrapesslproxiesorg()
         saveproxy()
+        deletelist()
     elif choice == 2:
         break
     
