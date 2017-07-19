@@ -21,7 +21,7 @@ def makesoup(url):
     print(url + "  scraped successfully")
     return BeautifulSoup(page.text,"lxml")
 
-def sslproxiesorgscrape(table):
+def proxyscrape(table):
     for row in table.findAll('tr'):
         list_of_cells = []
         for cell in row.findAll('td'):
@@ -29,21 +29,35 @@ def sslproxiesorgscrape(table):
             list_of_cells.append(text)
         list_of_rows.append(list_of_cells)
 
-def scrapesslproxiesorg():
-    soup=makesoup(url = "https://www.sslproxies.org")
-    sslproxiesorgscrape(table = soup.find('table', attrs={'id': 'proxylisttable'}))
+def scrapeproxies(url):
+    soup=makesoup(url)
+    proxyscrape(table = soup.find('table', attrs={'id': 'proxylisttable'}))
 
 def menu():
         strs = ('Enter 1 to Scrape Proxies from http://sslproxies.org\n'
-                'Enter 2 to Exit\n' )
+                'Enter 2 to Scrape Proxies from http://free-proxy-list.net\n'
+                'Enter 3 to Scrape Proxies from http://us-proxy.org\n'
+                'Enter 4 to Scrape Proxies from http://socks-proxy.net\n'
+                'Enter 5 to Exit\n' )
         choice = input(strs)
         return int(choice) 
 
 while True:          #use while True
     choice = menu()
     if choice == 1:
-        scrapesslproxiesorg()
+        scrapeproxies(url = "https://www.sslproxies.org")
+    elif choice == 2:
+        scrapeproxies(url = "https://free-proxy-list.net")
+    elif choice == 3:
+        scrapeproxies(url = "https://us-proxy.org")
+    elif choice == 4:
+        scrapeproxies(url = "https://socks-proxy.net")
+    elif choice == 5:
+        break
+    else:
+        print("Invalid choice!")
+    if 1 <= choice <= 4:
         saveproxy()
         deletelist()
-    elif choice == 2:
-        break
+
+    
